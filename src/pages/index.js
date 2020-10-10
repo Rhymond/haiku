@@ -1,6 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 import Layout from "../components/layout"
+import { graphql } from "gatsby"
 
 const HaikuWrapper = styled.div`
   width: 100%;
@@ -20,33 +21,36 @@ const Date = styled.span`
   color: grey;
 `
 
-export default function Home() {
+export default function Home({ data }) {
+  console.log(data)
   return (
     <Layout>
-      <HaikuWrapper>
-        <HaikuMeta>
-          > #1 <Date>2020-12-12</Date>
-        </HaikuMeta>
-        <Haiku>
-          school is 10 months long
-          <br />
-          each day we learn something new
-          <br />
-          school can help us grow
-        </Haiku>
-      </HaikuWrapper>
-      <HaikuWrapper>
-        <HaikuMeta>
-          > #1 <Date>2020-12-12</Date>
-        </HaikuMeta>
-        <Haiku>
-          school is 10 months long
-          <br />
-          each day we learn something new
-          <br />
-          school can help us grow
-        </Haiku>
-      </HaikuWrapper>
+      {data.allDataYaml.nodes.map(item => (
+        <HaikuWrapper>
+          <HaikuMeta>
+            > #{item.parent.name} <Date>{item.date}</Date>
+          </HaikuMeta>
+          <Haiku>{item.content}</Haiku>
+        </HaikuWrapper>
+      ))}
     </Layout>
   )
 }
+
+export const query = graphql`
+  query MyQuery {
+    allDataYaml {
+      nodes {
+        id
+        content
+        date(formatString: "YYYY-MM-DD")
+        parent {
+          ... on File {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+`
