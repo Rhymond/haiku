@@ -30,7 +30,14 @@ export default function Home({ data }) {
           <HaikuMeta>
             > #{item.name} <Date>{item.date}</Date>
           </HaikuMeta>
-          <Haiku>{item.content}</Haiku>
+          <Haiku>
+            {item.content.split("\n").map(line => (
+              <>
+                {line}
+                <br />
+              </>
+            ))}
+          </Haiku>
         </HaikuWrapper>
       ))}
     </Layout>
