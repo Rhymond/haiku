@@ -28,7 +28,7 @@ export default function Home({ data }) {
       {data.allDataYaml.nodes.map(item => (
         <HaikuWrapper>
           <HaikuMeta>
-            > #{item.parent.name} <Date>{item.date}</Date>
+            > #{item.name} <Date>{item.date}</Date>
           </HaikuMeta>
           <Haiku>{item.content}</Haiku>
         </HaikuWrapper>
@@ -39,17 +39,12 @@ export default function Home({ data }) {
 
 export const query = graphql`
   query MyQuery {
-    allDataYaml {
+    allDataYaml(sort: { fields: [name], order: DESC }) {
       nodes {
         id
         content
         date(formatString: "YYYY-MM-DD")
-        parent {
-          ... on File {
-            id
-            name
-          }
-        }
+        name
       }
     }
   }
