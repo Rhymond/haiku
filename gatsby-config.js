@@ -5,6 +5,7 @@
  */
 
 module.exports = {
+  pathPrefix: "/haiku",
   /* Your site config here */
   plugins: [
     {
